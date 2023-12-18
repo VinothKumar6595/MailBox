@@ -61,6 +61,7 @@ const Login = () => {
             className="p-3 w-72 mb-2 rounded-lg"
             onChange={emailChangeHandler}
             value={email}
+            required
           />
           <input
             placeholder="Password"
@@ -68,6 +69,7 @@ const Login = () => {
             className="p-3 w-72 mb-2 rounded-lg"
             onChange={passwordChangeHandler}
             value={password}
+            required
           />
           <input
             placeholder="Confirm Password"
@@ -75,6 +77,7 @@ const Login = () => {
             className="p-3 w-72 mb-2 rounded-lg"
             onChange={confirmPwdChangeHandler}
             value={confirmPwd}
+            required
           />
           <button className="p-3 bg-blue-400 w-72 mb-2 rounded-lg text-white mt-16 hover:bg-white hover:text-blue-400">
             Sign Up
