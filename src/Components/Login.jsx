@@ -1,7 +1,16 @@
 import React, { useState } from "react";
-import { signUpUrl } from "./Utils/Url";
+import { loginUrl, signUpUrl } from "../Utils/Url";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../Store/Redux";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const endpoint = localStorage.getItem("endpoint");
+  const isSignedUp = useSelector((state) => state.auth.isSignedUp);
+  const token = localStorage.getItem("token");
   const [email, setEmail] = useState("");
   const emailChangeHandler = (event) => {
     setEmail(event.target.value);
@@ -16,11 +25,35 @@ const Login = () => {
   };
   const formSubmitHandler = async (event) => {
     event.preventDefault();
-    // const endPoints = `/${email.replace(/\.|@/g, "")}`;
-
-    if (password === confirmPwd) {
+    const endPoints = `/${email.replace(/\.|@/g, "")}`;
+    if (!isSignedUp) {
+      if (password === confirmPwd) {
+        try {
+          const response = await fetch(signUpUrl, {
+            method: "POST",
+            body: JSON.stringify({
+              email,
+              password,
+              returnSecureToken: true,
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.error.message);
+          } else {
+            alert("User Sign up Successfull !!!");
+            dispatch(authActions.signUp());
+          }
+        } catch (err) {
+          console.log(err.message);
+        }
+      } else {
+        alert("Password does't match");
+      }
+    } else {
       try {
-        const response = await fetch(signUpUrl, {
+        const response = await fetch(loginUrl, {
           method: "POST",
           body: JSON.stringify({
             email,
@@ -33,14 +66,20 @@ const Login = () => {
         if (!response.ok) {
           throw new Error(data.error.message);
         } else {
-          alert("User Sign up Successfull !!!");
+          alert("Login Successull!");
+          console.log(data.idToken);
+          dispatch(authActions.login(data.idToken));
+          dispatch(authActions.endpoint(endPoints));
+          navigate("/home");
         }
       } catch (err) {
-        console.log(err.message);
+        alert(err.message);
       }
-    } else {
-      alert("Password does't match");
     }
+
+    setEmail("");
+    setPassword("");
+    setConfirmPwd("");
     const myObj = {
       email,
       password,
@@ -53,7 +92,7 @@ const Login = () => {
       <div className="bg-gray-400 flex items-center justify-center w-[360px] h-[440px] m-auto rounded-xl">
         <form className="flex flex-col" onSubmit={formSubmitHandler}>
           <h1 className="flex justify-center text-2xl font-semibold mb-16">
-            SignUp
+            {isSignedUp ? "Login" : "SignUp"}
           </h1>
           <input
             placeholder="Email"
@@ -71,21 +110,33 @@ const Login = () => {
             value={password}
             required
           />
-          <input
-            placeholder="Confirm Password"
-            type="password"
-            className="p-3 w-72 mb-2 rounded-lg"
-            onChange={confirmPwdChangeHandler}
-            value={confirmPwd}
-            required
-          />
+          {!isSignedUp && (
+            <input
+              placeholder="Confirm Password"
+              type="password"
+              className="p-3 w-72 mb-2 rounded-lg"
+              onChange={confirmPwdChangeHandler}
+              value={confirmPwd}
+              required
+            />
+          )}
           <button className="p-3 bg-blue-400 w-72 mb-2 rounded-lg text-white mt-16 hover:bg-white hover:text-blue-400">
-            Sign Up
+            {isSignedUp ? "Login" : "Sign Up"}
           </button>
         </form>
       </div>
       <div className="flex items-center justify-center m-auto">
-        <button className="p-3 w-[360px]  rounded-lg bg-blue-400 text-white mt-10 hover:bg-gray-400 hover:text-white">{`Have an account? Login`}</button>
+        <button
+          className="p-3 w-[360px]  rounded-lg bg-blue-400 text-white mt-10 hover:bg-gray-400 hover:text-white"
+          onClick={(event) => {
+            event.preventDefault();
+            dispatch(authActions.signUp());
+          }}
+        >
+          {isSignedUp
+            ? "Don't have an account? Sign-Up"
+            : `Have an account?Login`}
+        </button>
       </div>
     </div>
   );
