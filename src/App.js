@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Home from "./Components/Home";
 import { useSelector } from "react-redux";
 import ComposeMail from "./Components/ComposeMail";
+import SentMail from "./Components/SentMail";
+import Inbox from "./Components/Inbox";
 
 function App() {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -18,6 +20,8 @@ function App() {
       <Route path="/auth" element={<Login />} />
       <Route path="/home" element={<Home />} />
       <Route path="/composeMail" element={<ComposeMail />} />
+      <Route path="/sentBox" element={<SentMail />} />
+      <Route path="/inBox" element={<Inbox />} />
     </Routes>
   );
 }

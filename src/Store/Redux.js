@@ -1,4 +1,5 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
+import inboxSlice from "./Inbox";
 
 const initialAuthState = {
   isSignedUp: false,
@@ -36,9 +37,11 @@ const authSlice = createSlice({
 const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
+    inbox: inboxSlice.reducer,
   },
 });
 
 export const authActions = authSlice.actions;
+export const inboxActions = inboxSlice.actions;
 
 export default store;

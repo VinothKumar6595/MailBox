@@ -7,6 +7,8 @@ import GifBoxRoundedIcon from "@mui/icons-material/GifBoxRounded";
 import SentimentVerySatisfiedRoundedIcon from "@mui/icons-material/SentimentVerySatisfiedRounded";
 import { EditorState } from "draft-js";
 import { convertToHTML } from "draft-convert";
+import NavBar from "./NavBar";
+import Header from "./Header";
 
 const ComposeMail = () => {
   const [editorState, updateEditorState] = useState("");
@@ -69,26 +71,32 @@ const ComposeMail = () => {
   };
   return (
     <Fragment>
-      <div className="w-[1080px] h-[720px] m-auto mt-24 border-b-2 border-gray-200">
-        <form className="w-[1060px] m-auto">
-          <div className="flex">
-            <input
-              placeholder="To"
-              type="email"
-              className="p-2 w-full border-b-2 border-gray-300"
-              required
-              ref={sendToEmailInputRef}
-            />
-            <button
-              className="bg-white border-b-2 border-gray-300 font-light"
-              onClick={(e) => {
-                e.preventDefault();
-              }}
-            >
-              Cc/Bcc
-            </button>
+      <div className="flex-col">
+        <Header />
+        <div className="flex bg-gray-200 ">
+          <div>
+            <NavBar />
           </div>
-          {/* <input
+          <div className="w-[1380px] h-[720px] m-auto border-b-2 border-gray-500 bg-white ">
+            <form className="w-[1380px] ">
+              <div className="flex">
+                <input
+                  placeholder="To"
+                  type="email"
+                  className="p-2 w-full border-b-2 border-gray-500"
+                  required
+                  ref={sendToEmailInputRef}
+                />
+                <button
+                  className="bg-white border-b-2 border-gray-500 font-light"
+                  onClick={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  Cc/Bcc
+                </button>
+              </div>
+              {/* <input
             placeholder="Cc"
             type="email"
             className="p-2 w-full border-b-2 border-gray-300"
@@ -98,40 +106,42 @@ const ComposeMail = () => {
             type="email"
             className="p-2 w-full border-b-2 border-gray-300"
           /> */}
-          <input
-            placeholder="Subject"
-            type="email"
-            className="p-2 w-full border-b-2 border-gray-300"
-            ref={subInputRef}
-          />
-          <div className="">
-            <Editor
-              editorState={editorState}
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
-              className="bg-white"
-              onEditorStateChange={updateEditorState}
-            />
+              <input
+                placeholder="Subject"
+                type="email"
+                className="p-2 w-full border-b-2 border-gray-500"
+                ref={subInputRef}
+              />
+              <div className="">
+                <Editor
+                  editorState={editorState}
+                  toolbarClassName="toolbarClassName"
+                  wrapperClassName="wrapperClassName"
+                  editorClassName="editorClassName"
+                  className="bg-white"
+                  onEditorStateChange={updateEditorState}
+                />
+              </div>
+            </form>
+            <div className="flex mt-[540px] fixed">
+              <button
+                className="bg-blue-200 p-2 rounded-md ml-5"
+                onClick={sendEmailHandler}
+              >
+                Send <SendRoundedIcon />
+              </button>
+              <button className="ml-5">
+                <AttachFileRoundedIcon />
+              </button>
+              <button className="ml-5">
+                <SentimentVerySatisfiedRoundedIcon />
+              </button>
+              <button className="ml-5">
+                <GifBoxRoundedIcon className="" />
+              </button>
+            </div>
           </div>
-          <div className="flex mt-[520px]">
-            <button
-              className="bg-blue-200 p-2 rounded-md ml-5"
-              onClick={sendEmailHandler}
-            >
-              Send <SendRoundedIcon />
-            </button>
-            <button className="ml-5">
-              <AttachFileRoundedIcon />
-            </button>
-            <button className="ml-5">
-              <SentimentVerySatisfiedRoundedIcon />
-            </button>
-            <button className="ml-5">
-              <GifBoxRoundedIcon className="" />
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
     </Fragment>
   );
