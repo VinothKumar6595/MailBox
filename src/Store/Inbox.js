@@ -9,7 +9,7 @@ const inboxSlice = createSlice({
   initialState: initialInboxState,
   reducers: {
     addToInbox: (state, action) => {
-      state.inbox = [action.payload];
+      state.inbox = action.payload;
       console.log(state.inbox);
     },
   },
