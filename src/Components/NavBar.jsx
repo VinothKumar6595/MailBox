@@ -1,46 +1,49 @@
-import React from "react";
+import React from 'react'
 
-import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
-import { useNavigate } from "react-router-dom";
+import CreateTwoToneIcon from '@mui/icons-material/CreateTwoTone'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const NavBar = () => {
-  const navigate = useNavigate();
+  const unreadCounts = useSelector((state) => state.inbox.unreadCount)
+  console.log(unreadCounts)
+  const navigate = useNavigate()
   return (
-    <div className=" w-64  flex-col justify-center items-center border-r-2 border-gray-300">
-      <ul className="flex-col  h-[820px] p-2 font-bold items-center">
+    <div className=' w-64  flex-col justify-center items-center border-r-2 border-gray-300'>
+      <ul className='flex-col  h-[820px] p-2 font-bold items-center'>
         <li>
           <button
-            className="p-2 bg-blue-300 rounded-md m-10 "
+            className='p-2 bg-blue-300 rounded-md m-10 '
             onClick={() => {
-              navigate("/composeMail");
+              navigate('/composeMail')
             }}
           >
             Compose mail <CreateTwoToneIcon />
           </button>
         </li>
         <li
-          className="p-2  hover:cursor-pointer  hover:bg-blue-300 "
-          onClick={() => navigate("/inBox")}
+          className='p-2  hover:cursor-pointer  hover:bg-blue-300 '
+          onClick={() => navigate('/inBox')}
         >
-          Inbox
+          Inbox {unreadCounts > 0 && unreadCounts}
         </li>
         <li
-          className="p-2  hover:bg-blue-300"
+          className='p-2  hover:bg-blue-300'
           onClick={() => {
-            navigate("/sentBox");
+            navigate('/sentBox')
           }}
         >
           Sent
         </li>
-        <li className="p-2   hover:bg-blue-300">Unread</li>
-        <li className="p-2 0 hover:bg-blue-300">Drafts</li>
-        <li className="p-2  hover:cursor-pointer  hover:bg-blue-300">
+        <li className='p-2   hover:bg-blue-300'>Unread</li>
+        <li className='p-2 0 hover:bg-blue-300'>Drafts</li>
+        <li className='p-2  hover:cursor-pointer  hover:bg-blue-300'>
           Starred
         </li>
-        <li className="p-2  hover:bg-blue-300">Archive</li>
+        <li className='p-2  hover:bg-blue-300'>Archive</li>
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default NavBar;
+export default NavBar

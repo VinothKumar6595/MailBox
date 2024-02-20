@@ -1,47 +1,50 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit";
-import inboxSlice from "./Inbox";
+import { createSlice, configureStore } from '@reduxjs/toolkit'
+import inboxSlice from './Inbox'
+import sentBoxSlice from './sentBox'
 
 const initialAuthState = {
   isSignedUp: false,
   isLoggedIn: false,
   endpoint: null,
-  token: null,
-};
+  token: null
+}
 
 const authSlice = createSlice({
-  name: "authentication",
+  name: 'authentication',
   initialState: initialAuthState,
   reducers: {
     signUp: (state) => {
-      state.isSignedUp = !state.isSignedUp;
+      state.isSignedUp = !state.isSignedUp
     },
     endpoint: (state, action) => {
-      state.endpoint = localStorage.setItem("endpoint", action.payload);
-      state.endpoint = localStorage.getItem("endpoint");
+      state.endpoint = localStorage.setItem('endpoint', action.payload)
+      state.endpoint = localStorage.getItem('endpoint')
     },
     login: (state, action) => {
-      state.isLoggedIn = true;
-      localStorage.setItem("isLoggedIn", true);
-      state.token = action.payload;
-      localStorage.setItem("token", state.token);
+      state.isLoggedIn = true
+      localStorage.setItem('isLoggedIn', true)
+      state.token = action.payload
+      localStorage.setItem('token', state.token)
     },
     logout: (state, action) => {
-      state.isLoggedIn = false;
-      localStorage.clear("");
-      state.token = null;
-      state.isSignedUp = false;
-    },
-  },
-});
+      state.isLoggedIn = false
+      localStorage.clear('')
+      state.token = null
+      state.isSignedUp = false
+    }
+  }
+})
 
 const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
     inbox: inboxSlice.reducer,
-  },
-});
+    sentBox: sentBoxSlice.reducer
+  }
+})
 
-export const authActions = authSlice.actions;
-export const inboxActions = inboxSlice.actions;
+export const authActions = authSlice.actions
+export const inboxActions = inboxSlice.actions
+export const sentBoxActions = sentBoxSlice.actions
 
-export default store;
+export default store
