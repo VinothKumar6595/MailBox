@@ -5,8 +5,8 @@ import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import AttachFileRoundedIcon from "@mui/icons-material/AttachFileRounded";
 import GifBoxRoundedIcon from "@mui/icons-material/GifBoxRounded";
 import SentimentVerySatisfiedRoundedIcon from "@mui/icons-material/SentimentVerySatisfiedRounded";
-import { EditorState } from "draft-js";
-import { convertToHTML } from "draft-convert";
+import { EditorState, convertToRaw } from "draft-js";
+import { convertFromHTML, convertToHTML } from "draft-convert";
 import NavBar from "./NavBar";
 import Header from "./Header";
 
@@ -27,7 +27,7 @@ const ComposeMail = () => {
     const senderMail = localStorage.getItem("endpoint");
     try {
       const response = fetch(
-        `https://mailbox-913ab-default-rtdb.firebaseio.com/${senderMail}/sentMails.json`,
+        `https://mailbox-6185a-default-rtdb.firebaseio.com//${senderMail}/sentMails.json`,
         {
           method: "Post",
           body: JSON.stringify({ ...emailObj }),
@@ -48,11 +48,15 @@ const ComposeMail = () => {
       date: new Date(),
       unread: true,
     };
+    const htmlContent = convertToHTML(editorState.getCurrentContent());
+
+    console.log(htmlContent);
+
     const recieverMail1 = sendToEmailInputRef.current.value;
     const recieverMail = recieverMail1.replace(/[.@]/g, "");
     try {
       const response = fetch(
-        `https://mailbox-913ab-default-rtdb.firebaseio.com/${recieverMail}/recievedMails.json`,
+        `https://mailbox-6185a-default-rtdb.firebaseio.com//${recieverMail}/recievedMails.json`,
         {
           method: "POST",
           body: JSON.stringify({ ...emailObj2 }),
@@ -71,15 +75,15 @@ const ComposeMail = () => {
   };
   return (
     <Fragment>
-      <div className="flex-col">
+      <div className="flex-col ">
         <Header />
-        <div className="flex bg-gray-200 ">
+        <div className="flex bg-gray-200 h-[880px] ">
           <div>
             <NavBar />
           </div>
           <div className="w-[1380px] h-[720px] m-auto border-b-2 border-gray-500 bg-white ">
-            <form className="w-[1380px] ">
-              <div className="flex">
+            <form className="w-[1380px]  ">
+              <div className="flex relative">
                 <input
                   placeholder="To"
                   type="email"
@@ -121,25 +125,25 @@ const ComposeMail = () => {
                   className="bg-white"
                   onEditorStateChange={updateEditorState}
                 />
+                <div className="flex mt-[500px] ml-96 absolute bottom-0 left-0 ">
+                  <button
+                    className="bg-blue-200 p-2 rounded-md ml-5"
+                    onClick={sendEmailHandler}
+                  >
+                    Send <SendRoundedIcon />
+                  </button>
+                  <button className="ml-5">
+                    <AttachFileRoundedIcon />
+                  </button>
+                  <button className="ml-5">
+                    <SentimentVerySatisfiedRoundedIcon />
+                  </button>
+                  <button className="ml-5">
+                    <GifBoxRoundedIcon className="" />
+                  </button>
+                </div>
               </div>
             </form>
-            <div className="flex mt-[540px] fixed">
-              <button
-                className="bg-blue-200 p-2 rounded-md ml-5"
-                onClick={sendEmailHandler}
-              >
-                Send <SendRoundedIcon />
-              </button>
-              <button className="ml-5">
-                <AttachFileRoundedIcon />
-              </button>
-              <button className="ml-5">
-                <SentimentVerySatisfiedRoundedIcon />
-              </button>
-              <button className="ml-5">
-                <GifBoxRoundedIcon className="" />
-              </button>
-            </div>
           </div>
         </div>
       </div>

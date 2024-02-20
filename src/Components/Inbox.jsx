@@ -7,14 +7,14 @@ import NavBar from "./NavBar";
 
 const Inbox = () => {
   const dispatch = useDispatch();
-  const recieverEmail = localStorage.getItem("endpoint");
+  const userEmail = localStorage.getItem("endpoint");
   const inboxItems = useSelector((state) => state.inbox.inbox);
-  console.log(recieverEmail);
+  console.log(userEmail);
 
   useEffect(() => {
     axios
       .get(
-        `https://mailbox-913ab-default-rtdb.firebaseio.com/${recieverEmail}/recievedMails.json`
+        `https://mailbox-6185a-default-rtdb.firebaseio.com/${userEmail}/recievedMails.json`
       )
       .then((response) => {
         console.log(Object.entries(response.data));
@@ -22,22 +22,31 @@ const Inbox = () => {
       });
   }, []);
 
+  console.log(inboxItems);
   const inboxList = inboxItems.map((inboxMails) => {
-    <ul className="bg-slate-400">
-      {/* {console.log(inboxMails[1].from)} */}
-      <li>{inboxMails[1].from}</li>
-      <li>{inboxMails[1].emailSub}</li>
-      <li>{inboxMails[1].emailContent}</li>
-      <li>{inboxMails[1].date}</li>
-    </ul>;
+    // console.log(inboxMails[1].emailContent);
+    return (
+      <div>
+        <ul className="bg-slate-200">
+          <li className="w-full h-10 flex items-center" key={Math.random()}>
+            {inboxMails[1].from}-{inboxMails[1].emailSub}-
+            {inboxMails[1].emailContent}-{inboxMails[1].date}
+          </li>
+        </ul>
+      </div>
+    );
   });
+
+  console.log(inboxList);
   return (
     <div>
-      {/* <div>
+      <div className="relative">
         <Header />
         <NavBar />
-      </div> */}
-      <div className="p-64 ml-60">{inboxList}</div>
+        <div className="absolute top-32 left-64  text-lg w-full">
+          {inboxList}
+        </div>
+      </div>
     </div>
   );
 };
