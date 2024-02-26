@@ -74,7 +74,7 @@ const Inbox = () => {
             <span className="items-center w-64 flex  ">
               {inboxMails[1].unread === true ? (
                 <FiberManualRecordIcon
-                  sx={{ color: blue[700], fontSize: 30 }}
+                  sx={{ color: blue[600], fontSize: 30 }}
                   className="px-2"
                 />
               ) : (
